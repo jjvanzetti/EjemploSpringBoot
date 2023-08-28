@@ -1,0 +1,14 @@
+Generar clave privada:
+	openssl genrsa -out privada 1024
+
+Generar CSR:
+	openssl req -new -key privada -subj "/C=AR/O=JJV/CN=mocha/serialNumber=CUIT 23228933309" -out pedido
+
+Exportar Certificado devuelto por el afip a pkcs12:
+	openssl pkcs12 -export -inkey privada -in cert.crt -out jjv2.p12 -name "jjv" 
+
+	Nota: en este paso de exportación la cadena que se especifique para la opción "-name" (alias) sera el "keystore-signer".
+	Al ejecutar el comando nos pide una password, la misma sera luego la "keystore-password"; y el propio certificado ya 
+	exportado (.p12) el "kestore".
+	keystore, keystore-signer y keystore-password son propiedades del fichero de propiedades para la Autenticación y Autorización 
+	con el web service del afip que cumple esa función (WSAA).

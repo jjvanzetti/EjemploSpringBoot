@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="inicio"> <!-- NO BORRAR ES DONDE ESTA EL MENU -->
+<body>
+<main layout:fragment="page-content"> <!-- NO BORRAR ES PARA QUE SE CARGE EN LA ESTRUCTURA QUE TEENEMOS DE MENU -->
+    <div class="col-12">
+        <h2>Motivo Deuda</h2> <!-- Titulo de la seccion -->
+        <!-- Mensaje que sale arriba del boton si se guarda o edita bien, si no hay mensaje no aparece -->
+        <div th:classappend="'alert-' + (${clase != null} ? ${clase} : info)" th:if="${mensaje != null}"
+             th:text="${mensaje}"
+             class="alert">
+        </div>
+        <!-- Fin del mensaje -->
+        <a class="btn btn-success mb-2" th:href="@{/motivosDeuda/agregar}">Agregar</a> <!-- Boton para ir a la pagina de agregar -->
+        <!-- Comienza la tabla -->
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <!-- Titulos de las columnas -->
+                <tr>
+                  
+                    <th>Código</th>
+                    <th>Denominación</th>
+                    <th>Editar</th>
+                    <th>Eliminar</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <!-- Mostrado de informacion -->
+                <tr th:each="modelo : ${motivos}">
+                    <td th:text="${modelo.codigo}"></td>
+                    <td th:text="${modelo.denominacion}"></td>
+                    <td>
+                        <!-- Boton de editar -->
+                        <a class="btn btn-warning" th:href="@{/motivosDeuda/editar/} + ${modelo.id}">Editar <i
+                                class="fa fa-edit"></i></a>
+                    </td>
+                    <td>
+                        <!-- Boton de eliminar -->
+                        <form th:action="@{/motivosDeuda/eliminar}" method="post">
+                            <input type="hidden" name="id" th:value="${modelo.id}"/>
+                            <button type="submit" class="btn btn-danger">Eliminar <i class="fa fa-trash"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+</body>
+</html>

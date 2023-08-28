@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="inicio"> <!-- NO BORRAR ES DONDE ESTA EL MENU -->
+<body>
+<main layout:fragment="page-content"> <!-- NO BORRAR ES PARA QUE SE CARGE EN LA ESTRUCTURA QUE TEENEMOS DE MENU -->
+    <div class="col-12">
+        <h2>Producto</h2> <!-- Titulo de la seccion -->
+        <!-- Mensaje que sale arriba del boton si se guarda o edita bien, si no hay mensaje no aparece -->
+        <div th:classappend="'alert-' + (${clase != null} ? ${clase} : info)" th:if="${mensaje != null}"
+             th:text="${mensaje}"
+             class="alert">
+        </div>
+        <!-- Comienzo con el formulario que maneja el objeto -->
+        <form th:object="${producto}" th:action="@{/productos/save/}  + ${producto.id}" method="post">
+            <input type="hidden" th:field="*{id}"> <!-- Pongo el id pero lo oculto, esto lo necesito para el editar -->
+            <div class="form-group">
+                <label for="nombre">Nombre del producto</label> <!-- etiqueta -->
+                <!-- input de ingreso que lo relaciono con el campo y le pongo la validadcion -->
+                <input autocomplete="off" autofocus th:field="*{nombre}" id="nombre" 
+                       placeholder="Escribe el nombre del producto" type="text"
+                       class="form-control" th:classappend="${#fields.hasErrors('nombre')} ? 'is-invalid' : ''">
+                <div class="invalid-feedback" th:errors="*{nombre}"></div>
+            </div>
+            <div class="form-group">
+                <label for="codigo">Código de barras</label>
+                <input autocomplete="off" th:field="*{codigo}" id="codigo" placeholder="Escribe el código del producto"
+                       type="text"
+                       class="form-control" th:classappend="${#fields.hasErrors('codigo')} ? 'is-invalid' : ''">
+                <div class="invalid-feedback" th:errors="*{codigo}"></div>
+
+            </div>
+            <div class="form-group">
+                <label for="existencia">Existencia actual</label>
+                <input autocomplete="off" th:field="*{existencia}" id="existencia"
+                       placeholder="Cantidad actual del producto" type="number"
+                       class="form-control" th:classappend="${#fields.hasErrors('existencia')} ? 'is-invalid' : ''">
+                <div class="invalid-feedback" th:errors="*{existencia}"></div>
+
+            </div>
+            <div class="form-group">
+                <label for="existencia">Precio</label>
+                <input autocomplete="off" th:field="*{precio}" id="precio" placeholder="Precio del producto"
+                       type="number"
+                       class="form-control" th:classappend="${#fields.hasErrors('precio')} ? 'is-invalid' : ''">
+                <div class="invalid-feedback" th:errors="*{precio}"></div>
+
+            </div>
+            <!-- boton guardar -->
+            <button class="btn btn-success" type="submit">Guardar</button>
+            <!-- boton para visualizar todos -->
+            &nbsp;<a class="btn btn-warning" th:href="@{/productos/mostrar}">Ver todos</a>
+        </form>
+    </div>
+</main>
+</body>
+</html>

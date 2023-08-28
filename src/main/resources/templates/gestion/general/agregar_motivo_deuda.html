@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="inicio"> <!-- NO BORRAR ES DONDE ESTA EL MENU -->
+<body>
+<main layout:fragment="page-content"> <!-- NO BORRAR ES PARA QUE SE CARGE EN LA ESTRUCTURA QUE TEENEMOS DE MENU -->
+    <div class="col-12">
+        <h2>Motivo Deuda</h2> <!-- Titulo de la seccion -->
+        <!-- Mensaje que sale arriba del boton si se guarda o edita bien, si no hay mensaje no aparece -->
+        <div th:classappend="'alert-' + (${clase != null} ? ${clase} : info)" th:if="${mensaje != null}"
+             th:text="${mensaje}"
+             class="alert">
+        </div>
+        <!-- Comienzo con el formulario que maneja el objeto -->
+        <form th:object="${modelo}" th:action="@{/motivosDeuda/save/}  + ${modelo.id}" method="post">
+            <input type="hidden" th:field="*{id}"> <!-- Pongo el id pero lo oculto, esto lo necesito para el editar -->
+            <div class="form-group">
+                <label for="nombre">Denominación</label> <!-- etiqueta -->
+                <!-- input de ingreso que lo relaciono con el campo y le pongo la validadcion -->
+                <input autocomplete="off" autofocus th:field="*{denominacion}" id="denominacion" 
+                       placeholder="Escribe la denominación del motivo  deuda" type="text"
+                       class="form-control" th:classappend="${#fields.hasErrors('denominacion')} ? 'is-invalid' : ''">
+                <div class="invalid-feedback" th:errors="*{denominacion}"></div>
+            </div>
+             
+            <div class="form-group">
+                <label for="codigo">Código</label>
+                <input autocomplete="off" th:field="*{codigo}" id="codigo" placeholder="Escribe el código del motivo"
+                       type="text"
+                       class="form-control" th:classappend="${#fields.hasErrors('codigo')} ? 'is-invalid' : ''">
+                <div class="invalid-feedback" th:errors="*{codigo}"></div>
+
+            </div>
+           
+            <!-- boton guardar -->
+            <button class="btn btn-success" type="submit">Guardar</button>
+            <!-- boton para visualizar todos -->
+            &nbsp;<a class="btn btn-warning" th:href="@{/motivosDeuda/mostrar}">Ver todos</a>
+        </form>
+    </div>
+</main>
+</body>
+</html>

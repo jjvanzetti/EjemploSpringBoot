@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="inicio"> <!-- NO BORRAR ES DONDE ESTA EL MENU -->
+<body>
+<main layout:fragment="page-content"> <!-- NO BORRAR ES PARA QUE SE CARGE EN LA ESTRUCTURA QUE TEENEMOS DE MENU -->
+    <div class="col-12">
+        <h2>Clientes</h2> <!-- Titulo de la seccion -->
+        <!-- Mensaje que sale arriba del boton si se guarda o edita bien, si no hay mensaje no aparece -->
+        <div th:classappend="'alert-' + (${clase != null} ? ${clase} : info)" th:if="${mensaje != null}"
+             th:text="${mensaje}"
+             class="alert">
+        </div>
+        <!-- Fin del mensaje -->
+        
+        <div class="row container-fluid">
+               <div class="col-4">
+                    <a class="btn btn-success mb-2" th:href="@{/clientes/agregar}">Agregar</a> <!-- Boton para ir a la pagina de agregar -->
+               </div>
+               <div class="col-8">
+                    <form th:action="@{/clientes/buscarPage}" class="d-flex" role="search">
+                        <input autofocus="autofocus" name="q" class="form-control me-2" type="search" th:placeholder="${param.q}" aria-label="Search">
+                        <button class="btn btn-outline-success" type="submit">Buscar</button>
+                    </form>
+               </div>
+        </div>
+        
+        
+        <!-- Comienza la tabla -->
+        <div class="table-responsive" th:if="${datos}">
+            <table class="table table-bordered table-striped"> <!-- table-striped es para pintar una linea con cada color en la tabla -->
+                <thead>
+                    <!-- Titulos de las columnas -->
+                <tr>
+                    <th>Código</th>
+                    <th>Denominación</th>
+                    <th>IVA</th>
+                    <th>Acciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <!-- Mostrado de informacion -->
+                    <tr th:each="modelo, iStat : ${datos.content}"
+            th:style="${iStat.odd}? 'font-weight: bold;'"
+            th:alt-title="${iStat.even}? 'even' : 'odd'">
+                    <td th:text="${modelo.codigo}"></td>
+                    <td th:text="${modelo.razonSocial}"></td>
+                    <td th:text="${modelo.categoriaIva}"></td>
+                    <td>
+                         <a th:href="@{/clientes/editar/} + ${modelo.id}"><i class="fa fa-edit"></i></a>
+                         <a th:href="@{/clientes/eliminar/} + ${modelo.id}"><i class="fa fa-trash"></i></a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        
+              
+       
+        
+    </div>
+</main>
+</body>
+</html>

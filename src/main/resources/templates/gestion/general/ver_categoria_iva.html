@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="inicio"> <!-- NO BORRAR ES DONDE ESTA EL MENU -->
+ <!--   <head>
+    <script src=
+"https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.js">
+    </script>
+    <script src=
+"https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-animate.js">
+    </script>
+    <script src=
+"https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-sanitize.js">
+    </script>
+    <script src=
+"https://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-2.5.0.js">
+    </script>
+  
+    <script>
+      // Adding Modules
+      angular.module('gfg', ['ngAnimate', 'ngSanitize', 'ui.bootstrap']);
+      angular.module('gfg').controller('button', function ($scope) {
+        });
+    </script>
+    <link href=
+"https://netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" 
+          rel="stylesheet">
+    </head>
+    -->
+<body>
+<main layout:fragment="page-content"> <!-- NO BORRAR ES PARA QUE SE CARGE EN LA ESTRUCTURA QUE TEENEMOS DE MENU -->
+    <div class="col-12">
+        <h2>Categoría IVA</h2> <!-- Titulo de la seccion -->
+        <!-- Mensaje que sale arriba del boton si se guarda o edita bien, si no hay mensaje no aparece -->
+        <div th:classappend="'alert-' + (${clase != null} ? ${clase} : info)" th:if="${mensaje != null}"
+             th:text="${mensaje}"
+             class="alert">
+        </div>
+        <!-- Fin del mensaje -->
+        <div class="row container-fluid">
+               <div class="col-4">
+                    <a class="btn btn-success mb-2" th:href="@{/categoriasIVA/agregar}">Agregar</a> <!-- Boton para ir a la pagina de agregar -->
+               </div>
+               <div class="col-8">
+                    <form th:action="@{/categoriasIVA/buscar}" class="d-flex" role="search">
+                        <input autofocus="autofocus" name="q" class="form-control me-2" type="search" th:placeholder="${param.q}" aria-label="Search">
+                        <button class="btn btn-outline-success" type="submit">Buscar</button>
+                    </form>
+               </div>
+        </div>
+        <!-- Comienza la tabla -->
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <!-- Titulos de las columnas -->
+                <tr>
+                  
+                    <th style="width:15px">Código</th>
+                    <th>Denominación</th>
+                    <th style="width:15px">Editar</th>
+                    <th style="width:15px">Eliminar</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <!-- Mostrado de informacion -->
+                <tr th:each="modelo : ${categorias}">
+                    <td th:text="${modelo.codigo}"></td>
+                    <td th:text="${modelo.denominacion}"></td>
+
+                    <td>
+                        <!-- Boton de editar -->
+                        <a class="btn btn-warning" th:href="@{/categoriasIVA/editar/} + ${modelo.id}">Editar <i
+                                class="fa fa-edit"></i></a>
+                    </td>
+                    <td>
+                        <!-- Boton de eliminar -->
+                        <form th:action="@{/categoriasIVA/eliminar}" method="post">
+                            <input type="hidden" name="id" th:value="${modelo.id}"/>
+                            <button type="submit" class="btn btn-danger">Eliminar <i class="fa fa-trash"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+</main>
+</body>
+</html>
